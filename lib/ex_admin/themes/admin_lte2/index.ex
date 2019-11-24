@@ -278,8 +278,12 @@ defmodule ExAdmin.Theme.AdminLte2.Index do
 
             for field <- columns do
               build_field(resource, conn, field, fn contents, field_name ->
-                ExAdmin.Table.handle_contents(contents, field_name)
-              end)
+                case field_name do 
+                  {name, _} -> 
+                    ExAdmin.Table.handle_contents(contents, name)
+                  name -> 
+                    ExAdmin.Table.handle_contents(contents, name)
+                end)
             end
           end
 

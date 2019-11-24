@@ -201,9 +201,24 @@ defmodule ExAdmin.Table do
 
   def build_th(field_name, _), do: th(".th-#{parameterize(field_name)} #{humanize(field_name)}")
 
-  def build_th(field_name, opts, %{fields: fields} = table_opts) do
+  def build_th({field_name, translated}, opts, %{fields: fields} = table_opts) do
+    field_name = to_string(field_name)
     if String.to_atom(field_name) in fields and opts in [%{}, %{link: true}] do
-      _build_th(field_name, opts, table_opts)
+      _build_th(field_name, translated, opts, table_opts)
+    else
+      th(
+        ".th-#{field_name_to_class(field_name)} #{
+          humanize(Map.get(opts, :label, to_string(translated)))
+        }"
+      )
+    end
+  end
+
+
+  def build_th(field_name, opts, %{fields: fields} = table_opts) do
+    field_name = to_string(field_name)
+    if String.to_atom(field_name) in fields and opts in [%{}, %{link: true}] do
+      _build_th(field_name, field_name, opts, table_opts)
     else
       th(
         ".th-#{field_name_to_class(field_name)} #{
@@ -217,6 +232,7 @@ defmodule ExAdmin.Table do
 
   def _build_th(
         field_name,
+        translated,
         _opts,
         %{path_prefix: path_prefix, order: {name, sort}, fields: _fields} = table_opts
       )
@@ -237,7 +253,7 @@ defmodule ExAdmin.Table do
 
     th ".sortable.sorted-#{sort}.th-#{field_name}" do
       a(
-        "#{humanize(field_name)}",
+        "#{humanize(translated)}",
         href:
           path_prefix <>
             field_name <>
@@ -246,7 +262,7 @@ defmodule ExAdmin.Table do
     end
   end
 
-  def _build_th(field_name, opts, %{path_prefix: path_prefix} = table_opts) do
+  def _build_th(field_name, translated, opts, %{path_prefix: path_prefix} = table_opts) do
     sort = Map.get(table_opts, :sort, "asc")
 
     page_segment =
@@ -263,7 +279,7 @@ defmodule ExAdmin.Table do
 
     th ".sortable.th-#{field_name}" do
       a(
-        "#{humanize(Map.get(opts, :label, to_string(field_name)))}",
+        "#{humanize(Map.get(opts, :label, to_string(translated)))}",
         href:
           path_prefix <>
             field_name <>
@@ -304,9 +320,21 @@ defmodule ExAdmin.Table do
 
   def handle_contents(%{}, _field_name), do: []
 
-  def handle_contents(contents, field_name) when is_binary(contents) do
+  def handle_contents(contents, {_type, field_name}) when is_binary(contents) do
     markup do
       td to_class(".td-", field_name) do
+        contents
+        |> text()
+        |> HtmlSanitizeEx.html5()
+        # |> Phoenix.HTML.raw()
+      end
+    end
+  end
+
+
+  def handle_contents(contents, field_name) when is_binary(contents) do
+    markup do
+      td to_class(".td-", "field_name") do
         contents
         |> text()
         |> HtmlSanitizeEx.html5()

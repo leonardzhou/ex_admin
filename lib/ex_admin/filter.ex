@@ -21,6 +21,8 @@ defmodule ExAdmin.Filter do
     ends_with: gettext("End With")
   ]
 
+  @app_gettext Application.get_env( :ex_admin, :app_gettext, ExAdmin.Gettext )
+  
   def integer_options, do: @integer_options
   def string_options, do: @string_options
 
@@ -29,9 +31,21 @@ defmodule ExAdmin.Filter do
 
   def filter_view(conn, _filters, defn) do
     q = conn.params["q"]
-    order = conn.params["order"]
+    order = case conn.params["order"] do
+            nil -> 
+              primaryKey(conn)
+            "id" -> 
+              primaryKey(conn)
+            key -> 
+              key 
+            end 
     scope = conn.params["scope"]
     theme_module(conn, Filter).theme_filter_view(conn, defn, q, order, scope)
+  end
+  
+  def primaryKey(conn) do
+    [primary_key|_] = conn.assigns.defn.resource_model.__schema__(:primary_key)
+    primary_key 
   end
 
   def fields(%{index_filters: false}), do: []
@@ -74,7 +88,7 @@ defmodule ExAdmin.Filter do
 
   def field_label(field, defn) do
     case filter_options(defn, field, :label) do
-      nil -> humanize(field)
+      nil -> humanize(Gettext.gettext(@app_gettext, to_string(field)) )
       label -> label
     end
   end

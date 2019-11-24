@@ -23,6 +23,7 @@ defmodule ExAdmin.ActiveAdmin.LayoutView do
   #import ExAuth
   import ExAdmin.ViewHelpers
 
+  @ApplicationGettext Application.get_env( :ex_admin, :app_gettext, ExAdmin.Gettext )
 
   def any_actions?([]), do: false
   def any_actions?(nil), do: false
@@ -48,16 +49,17 @@ defmodule ExAdmin.ActiveAdmin.LayoutView do
     for {name, _opts} <- scopes do
       count = scope_counts[name]
       selected = if "#{name}" == "#{current_scope}", do: "active", else: ""
+      display_name = Gettext.gettext(@ApplicationGettext, to_string(name))
 
       li class: selected do
         a href: Utils.admin_resource_path(conn, :index, [[scope: name]]) do
           i ".nav-label.label.label-success" do
-            String.at("#{name}", 0)
+            String.at("#{display_name}", 0)
             |> String.upcase
             |> text
           end
           span do
-            text Utils.humanize(name) <> " "
+            text Utils.humanize(display_name) <> " "
             span ".badge.badge-xs.bg-blue #{count}", style: "margin-top: -2px"
           end
         end

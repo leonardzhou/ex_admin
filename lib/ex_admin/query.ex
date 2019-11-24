@@ -86,7 +86,7 @@ defmodule ExAdmin.Query do
 
   defp count_q(query, repo, name) do
     count =
-      select(query, [p], count(p.id))
+      select(query, [p], count())
       |> repo.one!
 
     {name, count}
