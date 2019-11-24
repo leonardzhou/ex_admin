@@ -283,7 +283,8 @@ defmodule ExAdmin.Theme.AdminLte2.Index do
                     ExAdmin.Table.handle_contents(contents, name)
                   name -> 
                     ExAdmin.Table.handle_contents(contents, name)
-                end)
+                  end 
+              end)
             end
           end
 

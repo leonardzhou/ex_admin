@@ -316,8 +316,9 @@ defmodule ExAdmin.Theme.ActiveAdmin.Index do
                     ExAdmin.Table.handle_contents(contents, name)
                   name -> 
                     ExAdmin.Table.handle_contents(contents, name)
-                end)
-              end)
+                  end 
+                end
+              )
             end
           end
 
