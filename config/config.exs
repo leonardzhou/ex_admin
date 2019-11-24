@@ -35,7 +35,7 @@ use Mix.Config
 config :ex_admin,
   repo: MyProject.Repo,
   modules: [],
-  app_gettext: ExAdmin.Gettext,
+  app_gettext: ExadmWeb.Gettext,
   module: ExAdmin
 
 config :phoenix, :template_engines,
