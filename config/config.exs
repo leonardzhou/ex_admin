@@ -34,7 +34,6 @@ use Mix.Config
 #   ]
 config :ex_admin,
   repo: MyProject.Repo,
-  module: MyProject,
   modules: [],
   app_gettext: ExAdmin.Gettext,
   module: ExAdmin
