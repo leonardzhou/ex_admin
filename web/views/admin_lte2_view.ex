@@ -20,7 +20,7 @@ defmodule ExAdmin.AdminLte2.LayoutView do
   #import ExAuth
   import ExAdmin.ViewHelpers
 
-  @ApplicationGettext Application.get_env( :ex_admin, :app_gettext, ExAdmin.Gettext )
+  def ApplicationGettext, do:  Application.get_env( :ex_admin, :app_gettext, ExAdmin.Gettext )
 
   def any_actions?([]), do: false
   def any_actions?(nil), do: false
@@ -54,7 +54,7 @@ defmodule ExAdmin.AdminLte2.LayoutView do
       li class: selected do
         href = Utils.admin_resource_path(conn, :index, [[scope: name]])
         |> ExAdmin.Index.build_filter_href(conn.params["q"])
-        display_name = Gettext.gettext(@ApplicationGettext, to_string(name))
+        display_name = Gettext.gettext(ApplicationGettext(), to_string(name))
         a href: href <> order_segment do
           i ".nav-label.label.label-success" do
             String.at("#{display_name}", 0)

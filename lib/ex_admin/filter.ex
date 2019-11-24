@@ -21,7 +21,7 @@ defmodule ExAdmin.Filter do
     ends_with: gettext("End With")
   ]
 
-  @app_gettext Application.get_env( :ex_admin, :app_gettext, ExAdmin.Gettext )
+  def app_gettext(), do:  Application.get_env( :ex_admin, :app_gettext, ExAdmin.Gettext )
   
   def integer_options, do: @integer_options
   def string_options, do: @string_options
@@ -88,7 +88,7 @@ defmodule ExAdmin.Filter do
 
   def field_label(field, defn) do
     case filter_options(defn, field, :label) do
-      nil -> humanize(Gettext.gettext(@app_gettext, to_string(field)) )
+      nil -> humanize(Gettext.gettext(app_gettext(), to_string(field)) )
       label -> label
     end
   end
