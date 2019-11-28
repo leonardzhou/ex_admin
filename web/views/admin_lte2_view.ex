@@ -21,7 +21,7 @@ defmodule ExAdmin.AdminLte2.LayoutView do
   import ExAdmin.ViewHelpers
 
   def applicationGettext() do
-      Application.get_env( :ex_admin, :app_gettext, ExAdmin.Gettext )
+      Application.get_env( :ex_admin, :app_gettext, ExadmWeb.Gettext )
   end 
 
   def any_actions?([]), do: false

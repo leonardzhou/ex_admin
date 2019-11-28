@@ -83,9 +83,19 @@ defmodule ExAdmin.Table do
       tr ".#{odd_even}##{model_name}_#{tr_id}" do
         for field <- columns do
           case field do
+            {{f_name, _translated}, fun} when is_function(fun) ->
+              td(".td-#{parameterize(f_name)} #{fun.(resource)}")
             {f_name, fun} when is_function(fun) ->
               td(".td-#{parameterize(f_name)} #{fun.(resource)}")
 
+            {{f_name, _translated}, opts} ->
+              build_field(resource, conn, {f_name, Enum.into(opts, %{})}, fn contents, f_name ->
+                td ".td-#{parameterize(f_name)}" do
+                  contents
+                  |> HtmlSanitizeEx.html5()
+                  # |> Phoenix.HTML.raw()
+                end
+              end)
             {f_name, opts} ->
               build_field(resource, conn, {f_name, Enum.into(opts, %{})}, fn contents, f_name ->
                 td ".td-#{parameterize(f_name)}" do
@@ -107,6 +117,13 @@ defmodule ExAdmin.Table do
       tr ".#{odd_even}##{model_name}_#{inx}" do
         for field <- columns do
           case field do
+            {{f_name, _translated}, fun} when is_function(fun) ->
+              td(".td-#{parameterize(f_name)} #{fun.(resource)}")
+
+            {f_name, _translated, opts} ->
+              build_field(resource, conn, {f_name, Enum.into(opts, %{})}, fn contents, f_name ->
+                td(".td-#{parameterize(f_name)} #{contents}")
+              end)
             {f_name, fun} when is_function(fun) ->
               td(".td-#{parameterize(f_name)} #{fun.(resource)}")
 
@@ -228,6 +245,7 @@ defmodule ExAdmin.Table do
     end
   end
 
+  def build_th({field_name, translated}, _, _), do: th(".th-#{parameterize(field_name)} #{translated}")
   def build_th(field_name, _, _), do: build_th(field_name, nil)
 
   def _build_th(
