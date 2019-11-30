@@ -93,7 +93,7 @@ defmodule ExAdmin.Table do
                 td ".td-#{parameterize(f_name)}" do
                   contents
                   |> HtmlSanitizeEx.html5()
-                  # |> Phoenix.HTML.raw()
+                  |> Phoenix.HTML.raw()
                 end
               end)
             {f_name, opts} ->
@@ -101,7 +101,7 @@ defmodule ExAdmin.Table do
                 td ".td-#{parameterize(f_name)}" do
                   contents
                   |> HtmlSanitizeEx.html5()
-                  # |> Phoenix.HTML.raw()
+                  |> Phoenix.HTML.raw()
                 end
               end)
           end
@@ -344,7 +344,7 @@ defmodule ExAdmin.Table do
         contents
         |> text()
         |> HtmlSanitizeEx.html5()
-        # |> Phoenix.HTML.raw()
+        |> Phoenix.HTML.raw()
       end
     end
   end
@@ -356,7 +356,7 @@ defmodule ExAdmin.Table do
         contents
         |> text()
         |> HtmlSanitizeEx.html5()
-        # |> Phoenix.HTML.raw()
+        |> Phoenix.HTML.raw()
       end
     end
   end
@@ -370,7 +370,7 @@ defmodule ExAdmin.Table do
     |> Enum.map(fn(content) ->
       content
       |> HtmlSanitizeEx.html5()
-      # |> Phoenix.HTML.raw()
+      |> Phoenix.HTML.raw()
     end)
     |> Enum.join(" ")
     _res = markup do
@@ -385,7 +385,7 @@ defmodule ExAdmin.Table do
       td to_class(".td-", field_name) do
         contents
         |> HtmlSanitizeEx.html5()
-        # |> Phoenix.HTML.raw()
+        |> Phoenix.HTML.raw()
       end
     end
   end
