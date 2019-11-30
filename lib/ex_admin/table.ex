@@ -350,7 +350,7 @@ defmodule ExAdmin.Table do
   end
 
 
-  def handle_contents(contents, field_name) when is_binary(contents) do
+  def handle_contents(contents, _field_name) when is_binary(contents) do
     markup do
       td to_class(".td-", "field_name") do
         contents
