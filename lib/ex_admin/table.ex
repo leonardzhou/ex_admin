@@ -346,7 +346,7 @@ defmodule ExAdmin.Table do
   def handle_contents(contents, _field_name) when is_binary(contents) do
     markup do
       td to_class(".td-", "field_name") do
-        {:safe, html2raw( contents ) }      
+        html2raw( contents )    
       end
     end
   end
