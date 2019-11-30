@@ -337,7 +337,7 @@ defmodule ExAdmin.Table do
   def handle_contents(contents, {_type, field_name}) when is_binary(contents) do
     markup do
       td to_class(".td-", field_name) do
-        html2raw( contents )
+        {:safe, html2raw( contents ) }      
       end
     end
   end
@@ -346,7 +346,7 @@ defmodule ExAdmin.Table do
   def handle_contents(contents, _field_name) when is_binary(contents) do
     markup do
       td to_class(".td-", "field_name") do
-        html2raw( contents )
+        {:safe, html2raw( contents ) }      
       end
     end
   end
@@ -357,13 +357,11 @@ defmodule ExAdmin.Table do
 
   def handle_contents(contents, field_name) when is_list(contents) do
     content = contents
-    |> Enum.map(fn(content) ->
-      html2raw( content )
-    end)
+    |> Enum.map(fn( c ) -> html2raw( c ) |> IO.inspect() end)
     |> Enum.join(" ")
     _res = markup do
       td to_class(".td-", field_name) do
-        content
+        content 
       end
     end
   end
