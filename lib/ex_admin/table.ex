@@ -91,17 +91,13 @@ defmodule ExAdmin.Table do
             {{f_name, _translated}, opts} ->
               build_field(resource, conn, {f_name, Enum.into(opts, %{})}, fn contents, f_name ->
                 td ".td-#{parameterize(f_name)}" do
-                  contents
-                  |> HtmlSanitizeEx.html5()
-                  |> Phoenix.HTML.raw()
+                  html2raw( contents )
                 end
               end)
             {f_name, opts} ->
               build_field(resource, conn, {f_name, Enum.into(opts, %{})}, fn contents, f_name ->
                 td ".td-#{parameterize(f_name)}" do
-                  contents
-                  |> HtmlSanitizeEx.html5()
-                  |> Phoenix.HTML.raw()
+                  html2raw( contents )
                 end
               end)
           end
@@ -341,10 +337,7 @@ defmodule ExAdmin.Table do
   def handle_contents(contents, {_type, field_name}) when is_binary(contents) do
     markup do
       td to_class(".td-", field_name) do
-        contents
-        |> text()
-        |> HtmlSanitizeEx.html5()
-        |> Phoenix.HTML.raw()
+        html2raw( contents )
       end
     end
   end
@@ -353,10 +346,7 @@ defmodule ExAdmin.Table do
   def handle_contents(contents, _field_name) when is_binary(contents) do
     markup do
       td to_class(".td-", "field_name") do
-        contents
-        |> text()
-        |> HtmlSanitizeEx.html5()
-        |> Phoenix.HTML.raw()
+        html2raw( contents )
       end
     end
   end
@@ -368,9 +358,7 @@ defmodule ExAdmin.Table do
   def handle_contents(contents, field_name) when is_list(contents) do
     content = contents
     |> Enum.map(fn(content) ->
-      content
-      |> HtmlSanitizeEx.html5()
-      |> Phoenix.HTML.raw()
+      html2raw( content )
     end)
     |> Enum.join(" ")
     _res = markup do
@@ -383,10 +371,14 @@ defmodule ExAdmin.Table do
   def handle_contents(contents, field_name) do
     markup do
       td to_class(".td-", field_name) do
-        contents
-        |> HtmlSanitizeEx.html5()
-        |> Phoenix.HTML.raw()
+        html2raw( contents )
       end
     end
+  end
+  def html2raw( data ) do
+      {:safe, content } = data
+        |> HtmlSanitizeEx.html5()
+        |> Phoenix.HTML.raw()
+      content 
   end
 end
