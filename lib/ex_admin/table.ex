@@ -370,13 +370,20 @@ defmodule ExAdmin.Table do
       end
     end
   end
-
   def handle_contents(contents, field_name) do
     markup do
       td to_class(".td-", field_name) do
         html2raw( contents )
       end
     end
+  end
+
+  def html2raw( data ) when is_list(data) do
+      {:safe, content } = data
+        |> Enum.map(&HtmlSanitizeEx.html5(&1)) 
+        |> Enum.join(" ")
+        |> Phoenix.HTML.raw()
+      content 
   end
   def html2raw( data ) do
       {:safe, content } = data

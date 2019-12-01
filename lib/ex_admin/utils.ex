@@ -121,7 +121,10 @@ defmodule ExAdmin.Utils do
   def parameterize(str) when is_binary(str), do: Inflex.parameterize(str, "_")
   # do: str
   def parameterize(tuple) when is_tuple(tuple) do
-    Tuple.to_list(tuple)
+    case tuple do 
+      {{type1, type2}, type3} -> [type1, type2, type3] 
+       {type1, type2} ->  [type1, type2]
+    end 
     |> Enum.map(&Kernel.to_string/1)
     |> Enum.join("_")
   end
