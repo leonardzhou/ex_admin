@@ -8,7 +8,7 @@ defmodule ExAdmin.Helpers do
   import Kernel, except: [to_string: 1]
   import ExAdmin.Utils
   import ExAdmin.Render
-
+  import ExAdmin.Gettext
   def build_fieldset_legend(nil), do: []
   def build_fieldset_legend(""), do: []
 
@@ -499,5 +499,12 @@ defmodule ExAdmin.Helpers do
 
   def field_name_to_class(field_name) do
     parameterize(String.replace_suffix(field_name, "?", ""))
+  end
+
+  def app_gettext(name) do
+    Gettext.gettext(app_gettext_module(), to_string(name))
+  end
+  def app_gettext_module do
+      Application.get_env(:ex_admin, :app_gettext)
   end
 end
