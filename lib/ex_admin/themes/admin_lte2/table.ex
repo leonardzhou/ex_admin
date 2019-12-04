@@ -24,18 +24,19 @@ defmodule ExAdmin.Theme.AdminLte2.Table do
     end
   end
 
-  def theme_attributes_table(conn, resource, schema, resource_model) do
+  def theme_attributes_table(conn, resource, schema, resourceModel) do
     markup do
       div ".box" do
         div ".box-header.with-border" do
+          resource_model = ExAdmin.Helpers.app_gettext(resourceModel)
           h3(
             schema[:name] ||
-              gettext("%{resource_model} Details", resource_model: Utils.humanize(resource_model))
+              gettext("%{resource_model} Details", resource_model: resource_model)
           )
         end
 
         div ".box-body" do
-          do_attributes_table_for(conn, resource, resource_model, schema, @table_opts)
+          do_attributes_table_for(conn, resource, resourceModel, schema, @table_opts)
         end
       end
     end

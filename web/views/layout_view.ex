@@ -21,7 +21,9 @@ defmodule ExAdmin.LayoutView do
       title -> title
     end
   end
-
+  def cc() do
+    Application.get_env(:ex_admin, :getttxt)
+  end
   def logo_mini do
     default = "Ex<b>A</b>"
     Application.get_env(:ex_admin, :logo_mini, default)
