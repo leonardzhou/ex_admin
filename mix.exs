@@ -88,7 +88,7 @@ defmodule ExAdmin.Mixfile do
     [
       maintainers: ["Jared Smith"],
       licenses: ["MIT"],
-      links: %{"Github" => "https://github.com/sublimecoder/ex_admin"},
+     # links: %{"Github" => "https://github.com/sublimecoder/ex_admin"},
       files:
         ~w(lib priv web README.md package.json mix.exs LICENSE brunch-config.js AdminLte-LICENSE)
     ]
